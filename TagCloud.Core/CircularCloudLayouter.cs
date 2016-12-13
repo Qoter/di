@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace TagCloud.Core
 {
-    public class CircularCloudLayouter
+    public class CircularCloudLayouter : ICloudLayouter
     {
-        public IReadOnlyList<Rectangle> Rectangles => placedRectangles.AsReadOnly();
+        public IEnumerable<Rectangle> PlacedRectangles => placedRectangles.AsReadOnly();
         public Point Center { get; private set; }
 
         private readonly List<Rectangle> placedRectangles = new List<Rectangle>();
@@ -37,39 +37,12 @@ namespace TagCloud.Core
             return sizes.Select(PutNextRectangle).ToList();
         }
 
-        public void Normalize()
-        {
-            var xOffset = -Math.Min(0, placedRectangles.Min(rectangle => rectangle.Left));
-            var yOffset = -Math.Min(0, placedRectangles.Min(rectangle => rectangle.Top));
-
-            for (var i = 0; i < placedRectangles.Count; i++)
-            {
-                var rectangle = placedRectangles[i];
-                rectangle.Offset(xOffset, yOffset);
-                placedRectangles[i] = rectangle;
-            }
-
-            var center = Center;
-            center.Offset(xOffset, yOffset);
-            Center = center;
-        }
-
         private Rectangle PutNextRectangleOnSpiral(Size rectangleSize)
         {
             return GenerateNextPoints()
                 .Select(point => GetSuitableRectangles(point, rectangleSize).ToList())
                 .First(rectanglesSet => rectanglesSet.Any())
                 .MinBy(candidate => candidate.DistanceTo(Center));
-        }
-
-        public Size CalculateSize()
-        {
-            var minX = placedRectangles.Min(r => r.Left);
-            var maxX = placedRectangles.Max(r => r.Right);
-            var minY = placedRectangles.Min(r => r.Top);
-            var maxY = placedRectangles.Max(r => r.Bottom);
-
-            return new Size(maxX - minX, maxY - minY);
         }
 
         private IEnumerable<Point> GenerateNextPoints()

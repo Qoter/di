@@ -23,16 +23,16 @@ namespace TagCloud.Core
         public Bitmap CreateCloud(Dictionary<string, int> wordStatisics)
         {
             var wordsStyleList = GenerateWordsStyle(wordStatisics).ToList();
-            var layouter = CreateNormalizeLayouter(wordsStyleList);
+            var layouter = CreateLayouter(wordsStyleList);
+
 
             return CreateBitmap(wordsStyleList, layouter);
         }
 
-        private static CircularCloudLayouter CreateNormalizeLayouter(IEnumerable<Tuple<string, Font, Color>> wordsStyle)
+        private static CircularCloudLayouter CreateLayouter(IEnumerable<Tuple<string, Font, Color>> wordsStyle)
         {
             var layouter = new CircularCloudLayouter();
             layouter.PutAllRectangles(wordsStyle.Select(wordStyle => TextRenderer.MeasureText(wordStyle.Item1, wordStyle.Item2)));
-            layouter.Normalize();
             return layouter;
         }
 
@@ -41,10 +41,12 @@ namespace TagCloud.Core
             return statistics.Keys.Select(word => Tuple.Create(word, CalculateFont(statistics[word]), CalculateColor(statistics[word])));
         }
 
-        private Bitmap CreateBitmap(List<Tuple<string, Font, Color>> wordsStyleList, CircularCloudLayouter layouter)
+        private Bitmap CreateBitmap(List<Tuple<string, Font, Color>> wordsStyleList, ICloudLayouter layouter)
         {
-            var imageSize = layouter.CalculateSize();
-            var bitmap = new Bitmap(imageSize.Width, imageSize.Height);
+            var size = layouter.CalculateSize();
+            var bitmap = new Bitmap(size.Width, size.Height);
+
+            var placedRectangles = layouter.ShiftToFirstQuadrant().ToList();
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
@@ -54,7 +56,7 @@ namespace TagCloud.Core
                     var word = wordsStyleList[i].Item1;
                     var font = wordsStyleList[i].Item2;
                     var color = wordsStyleList[i].Item3;
-                    graphics.DrawString(word, font, new SolidBrush(color), layouter.Rectangles[i]);
+                    graphics.DrawString(word, font, new SolidBrush(color), placedRectangles[i]);
                 }
             }
 

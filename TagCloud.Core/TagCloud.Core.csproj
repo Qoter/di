@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircularCloudLayouter.cs" />
+    <Compile Include="CloudLayouterExtensions.cs" />
+    <Compile Include="ICloudLayouter.cs" />
     <Compile Include="Infrastructure\EnumerableExtension.cs" />
     <Compile Include="Infrastructure\PointExtension.cs" />
     <Compile Include="Infrastructure\RectangleExtension.cs" />

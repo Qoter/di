@@ -32,12 +32,11 @@ namespace TagCloud.CoreTests
         {
             if (TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed) return;
 
-            defaultLayouter.Normalize();
             var size = defaultLayouter.CalculateSize();
             var bitmap = new Bitmap(size.Width, size.Height);
             var graphics = Graphics.FromImage(bitmap);
             graphics.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
-            graphics.DrawRectangles(Pens.Black, defaultLayouter.Rectangles.ToArray());
+            graphics.DrawRectangles(Pens.Black, defaultLayouter.ShiftToFirstQuadrant().ToArray());
 
             var savePath = Path.Combine(TestContext.CurrentContext.TestDirectory, TestContext.CurrentContext.Test.Name + ".png");
             bitmap.Save(savePath, ImageFormat.Png);
@@ -80,8 +79,8 @@ namespace TagCloud.CoreTests
         {
             defaultLayouter.PutAllRectangles(Enumerable.Repeat(defaultSize, rectanglesCount));
 
-            (from first in defaultLayouter.Rectangles
-             from second in defaultLayouter.Rectangles
+            (from first in defaultLayouter.PlacedRectangles
+             from second in defaultLayouter.PlacedRectangles
              where first != second && first.IntersectsWith(second)
              select first).Should().BeEmpty();
         }
@@ -91,7 +90,7 @@ namespace TagCloud.CoreTests
         {
             var addedRectangles = defaultLayouter.PutAllRectangles(Enumerable.Repeat(defaultSize, rectanglesCount));
 
-            defaultLayouter.Rectangles.Should().BeEquivalentTo(addedRectangles);
+            defaultLayouter.PlacedRectangles.Should().BeEquivalentTo(addedRectangles);
         }
 
         [Test]
@@ -104,13 +103,13 @@ namespace TagCloud.CoreTests
         }
 
         [Test]
-        public void ShiftRectanglesInFirstQuadrant_WhenCallNormalize([Values(1, 2, 50)]int rectanglesCount)
+        public void ShiftRectanglesInFirstQuadrant_WhenCallShiftToFirstQuadrant([Values(1, 2, 50)]int rectanglesCount)
         {
             defaultLayouter.PutAllRectangles(Enumerable.Repeat(defaultSize, rectanglesCount));
 
-            defaultLayouter.Normalize();
+            var rectanglesInFirstQuadrant = defaultLayouter.ShiftToFirstQuadrant();
 
-            defaultLayouter.Rectangles.Should().OnlyContain(rectangle => rectangle.X >= 0 && rectangle.Y >= 0);
+            rectanglesInFirstQuadrant.Should().OnlyContain(rectangle => rectangle.X >= 0 && rectangle.Y >= 0);
         }
     }
 }

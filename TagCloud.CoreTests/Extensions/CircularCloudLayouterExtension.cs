@@ -9,13 +9,13 @@ namespace TagCloud.CoreTests.Extensions
     {
         public static int GetTotalRectanglesSquare(this CircularCloudLayouter layouter)
         {
-            return layouter.Rectangles
+            return layouter.PlacedRectangles
                 .Sum(rectangle => rectangle.Width*rectangle.Height);
         }
 
         public static double GetMinimalCircleRadius(this CircularCloudLayouter layouter)
         {
-            return layouter.Rectangles
+            return layouter.PlacedRectangles
                 .SelectMany(RectangleExtension.GetAngles)
                 .Max(angle => angle.DistanceTo(layouter.Center));
         }

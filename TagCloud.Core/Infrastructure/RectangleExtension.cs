@@ -16,7 +16,7 @@ namespace TagCloud.Core.Infrastructure
 
         public static double DistanceTo(this Rectangle rectanle, Point point)
         {
-            return rectanle.GetAngles().Max(angle => PointExtension.DistanceTo(angle, point));
+            return rectanle.GetAngles().Max(angle => angle.DistanceTo(point));
         }
 
         public static IEnumerable<Rectangle> CreateRectangles(Point anglePosition, Size rectangleSize)
@@ -25,6 +25,12 @@ namespace TagCloud.Core.Infrastructure
                 from shiftX in new[] { 0, -1 }
                 from shiftY in new[] { 0, -1 }
                 select new Rectangle(anglePosition.Shift(rectangleSize.Width * shiftX, rectangleSize.Height * shiftY), rectangleSize);
+        }
+
+        public static Rectangle Shift(this Rectangle rectangle, int xShift, int yShift)
+        {
+            rectangle.Offset(xShift, yShift);
+            return rectangle;
         }
     }
 }
