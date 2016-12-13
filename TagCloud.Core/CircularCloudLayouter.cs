@@ -72,9 +72,9 @@ namespace TagCloud.Core
                 .Where(CanPut);
         }
 
-        private bool CanPut(Rectangle rectangle)
+        private bool CanPut(Rectangle candidate)
         {
-            return placedRectangles.All(placed => !placed.IntersectsWith(rectangle));
+            return placedRectangles.All(placed => !placed.IntersectsWith(candidate));
         }
     }
 }
