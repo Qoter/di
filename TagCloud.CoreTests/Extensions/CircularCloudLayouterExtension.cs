@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TagCloud.Core;
+using TagCloud.Core.Infrastructure;
 
-namespace TagsCloudVisualization
+namespace TagCloud.CoreTests.Extensions
 {
     public static class CircularCloudLayouterExtension
     {
@@ -23,7 +22,7 @@ namespace TagsCloudVisualization
 
         public static double GetMinimalCircleSquare(this CircularCloudLayouter layouter)
         {
-            return Math.PI*Math.Pow(layouter.GetMinimalCircleRadius(), 2);
+            return Math.PI*Math.Pow(GetMinimalCircleRadius(layouter), 2);
         }
 
     }

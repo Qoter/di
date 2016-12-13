@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace TagsCloudVisualization
+namespace TagCloud.Core.Infrastructure
 {
     public static class PointExtension
     {

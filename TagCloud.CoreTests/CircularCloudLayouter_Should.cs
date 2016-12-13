@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -7,9 +6,13 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using TagCloud.Core;
+using TagCloud.Core.Infrastructure;
+using TagCloud.CoreTests.Extensions;
 
-namespace TagsCloudVisualization
+namespace TagCloud.CoreTests
 {
+    [TestFixture]
     internal class CircularCloudLayouter_Should
     {
         private CircularCloudLayouter defaultLayouter;
@@ -98,12 +101,6 @@ namespace TagsCloudVisualization
 
             defaultLayouter.GetTotalRectanglesSquare().Should()
                 .BeGreaterThan((int) (defaultLayouter.GetMinimalCircleSquare()/2));
-        }
-
-        [Test]
-        public void PutInCircleShape_DifferentRectangles()
-        {
-            Assert.Fail();
         }
 
         [Test]

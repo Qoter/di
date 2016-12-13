@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace TagsCloudVisualization
+namespace TagCloud.Core.Infrastructure
 {
     public static class RectangleExtension
     {
@@ -16,7 +16,7 @@ namespace TagsCloudVisualization
 
         public static double DistanceTo(this Rectangle rectanle, Point point)
         {
-            return rectanle.GetAngles().Max(angle => angle.DistanceTo(point));
+            return rectanle.GetAngles().Max(angle => PointExtension.DistanceTo(angle, point));
         }
 
         public static IEnumerable<Rectangle> CreateRectangles(Point anglePosition, Size rectangleSize)

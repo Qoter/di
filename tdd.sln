@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualization", "TagsCloudVisualization\TagsCloudVisualization.csproj", "{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloud.Console", "TagCloud.Console\TagCloud.Console.csproj", "{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloudConsole", "TagCloudConsole\TagCloudConsole.csproj", "{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloud.Core", "TagCloud.Core\TagCloud.Core.csproj", "{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloud.CoreTests", "TagCloud.CoreTests\TagCloud.CoreTests.csproj", "{B532A595-C394-428F-8B54-83830C982A18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B532A595-C394-428F-8B54-83830C982A18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B532A595-C394-428F-8B54-83830C982A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B532A595-C394-428F-8B54-83830C982A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B532A595-C394-428F-8B54-83830C982A18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TagsCloudVisualization
+namespace TagCloud.Core.Infrastructure
 {
     public static class EnumerableExtension
     {
