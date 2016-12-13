@@ -9,7 +9,7 @@ namespace TagCloud.Core
     public class CircularCloudLayouter : ICloudLayouter
     {
         public IEnumerable<Rectangle> PlacedRectangles => placedRectangles.AsReadOnly();
-        public Point Center { get; private set; }
+        public Point Center { get; }
 
         private readonly List<Rectangle> placedRectangles = new List<Rectangle>();
         private const double DeltaAngle = 0.1;

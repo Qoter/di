@@ -59,7 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\CircularCloudLayouterExtension.cs" />
+    <Compile Include="Extensions\CloudLayouterExtensions.cs" />
     <Compile Include="CircularCloudLayouter_Should.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
