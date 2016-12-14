@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TagCloud.Core;
+using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Console
 {
@@ -13,8 +14,6 @@ namespace TagCloud.Console
         public static void Main(string[] args)
         {
             var txtWordsFilePath = args[0];
-            var backgroundColor = args[1];
-            var fontColor = args[2];
 
             var wordsProvider = new TxtFileWordsProvider(txtWordsFilePath);
             var words = wordsProvider.GetWords();
@@ -25,8 +24,10 @@ namespace TagCloud.Console
             var statisticsCalculator = new StatisticsCalculator();
             var statistics = statisticsCalculator.CalculateStatistics(preprocessedWords);
 
-            var visualizator = new CloudRenderer(8f, ColorTranslator.FromHtml(backgroundColor), ColorTranslator.FromHtml(fontColor));
-            var bitmap = visualizator.RenderCloud(statistics);
+            var styleProvider = new StyleProvider();
+
+            var visualizator = new CloudRenderer(styleProvider);
+            var bitmap = visualizator.RenderCloud(new Cloud(new CircularCloudLayouter()));
 
             bitmap.Save("cloud.png",  ImageFormat.Png);
         }
