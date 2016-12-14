@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TagCloud.Core;
-using TagCloud.Core.Infrastructure;
+using TagCloud.Core.Infratructure;
 
 namespace TagCloud.CoreTests.Extensions
 {

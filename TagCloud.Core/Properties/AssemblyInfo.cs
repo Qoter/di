@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TagsCloudVisualization")]
+[assembly: AssemblyTitle("TagCloud.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TagsCloudVisualization")]
+[assembly: AssemblyProduct("TagCloud.Core")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("be5e9009-b3b8-4236-abff-4e0aaa447ea9")]
+[assembly: Guid("3f563585-dd3b-4f26-a813-07c0125c310f")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TagCloud.Core.Infrastructure
+namespace TagCloud.Core.Infratructure
 {
     public static class EnumerableExtension
     {

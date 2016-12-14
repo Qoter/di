@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BE5E9009-B3B8-4236-ABFF-4E0AAA447EA9}</ProjectGuid>
+    <ProjectGuid>{3F563585-DD3B-4F26-A813-07C0125C310F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TagCloud.Core</RootNamespace>
@@ -49,13 +49,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircularCloudLayouter.cs" />
+    <Compile Include="Cloud.cs" />
+    <Compile Include="CloudItem.cs" />
     <Compile Include="CloudLayouterExtensions.cs" />
-    <Compile Include="ICloudLayouter.cs" />
-    <Compile Include="Infrastructure\EnumerableExtension.cs" />
-    <Compile Include="Infrastructure\PointExtension.cs" />
-    <Compile Include="Infrastructure\RectangleExtension.cs" />
+    <Compile Include="EntryCountStatistics.cs" />
+    <Compile Include="Infratructure\EnumerableExtension.cs" />
+    <Compile Include="Infratructure\PointExtension.cs" />
+    <Compile Include="Infratructure\RectangleExtension.cs" />
+    <Compile Include="Interfaces\ICloudLayouter.cs" />
+    <Compile Include="Interfaces\IWordsPreprocessor.cs" />
+    <Compile Include="Interfaces\IStatisticsCalculator.cs" />
+    <Compile Include="Interfaces\IWordsProvider.cs" />
+    <Compile Include="LowerLongPreprocessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TagCloudVisualizator.cs" />
+    <Compile Include="TagCloudRenderer.cs" />
+    <Compile Include="TxtFileWordsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

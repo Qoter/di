@@ -4,29 +4,21 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
+using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Core
 {
-    public class TagCloudVisualizator
+    public class CloudRenderer
     {
         private readonly Color backgroundColor;
         private readonly Color fontColor;
         private readonly float baseFontSize;
 
-        public TagCloudVisualizator(float baseFontSize, Color backgroundColor, Color fontColor)
+        public CloudRenderer(float baseFontSize, Color backgroundColor, Color fontColor)
         {
             this.baseFontSize = baseFontSize;
             this.backgroundColor = backgroundColor;
             this.fontColor = fontColor;
-        }
-
-        public Bitmap CreateCloud(Dictionary<string, int> wordStatisics)
-        {
-            var wordsStyleList = GenerateWordsStyle(wordStatisics).ToList();
-            var layouter = CreateLayouter(wordsStyleList);
-
-
-            return CreateBitmap(wordsStyleList, layouter);
         }
 
         private static CircularCloudLayouter CreateLayouter(IEnumerable<Tuple<string, Font, Color>> wordsStyle)
@@ -36,9 +28,13 @@ namespace TagCloud.Core
             return layouter;
         }
 
-        private IEnumerable<Tuple<string, Font, Color>> GenerateWordsStyle(Dictionary<string, int> statistics)
+        private IEnumerable<Tuple<string, Font, Color>> GenerateWordsStyle(IEnumerable<KeyValuePair<string, int>> statistics)
         {
-            return statistics.Keys.Select(word => Tuple.Create(word, CalculateFont(statistics[word]), CalculateColor(statistics[word])));
+            return statistics
+                .Select(stat => Tuple.Create(
+                    stat.Key, 
+                    CalculateFont(stat.Value), 
+                    CalculateColor(stat.Value)));
         }
 
         private Bitmap CreateBitmap(List<Tuple<string, Font, Color>> wordsStyleList, ICloudLayouter layouter)
@@ -72,6 +68,15 @@ namespace TagCloud.Core
         private Color CalculateColor(int wordStatistic)
         {
             return fontColor;
+        }
+
+        public Bitmap RenderCloud(IEnumerable<KeyValuePair<string, int>> statistics)
+        {
+            var wordsStyleList = GenerateWordsStyle(statistics).ToList();
+            var layouter = CreateLayouter(wordsStyleList);
+
+
+            return CreateBitmap(wordsStyleList, layouter);
         }
     }
 }

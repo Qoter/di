@@ -7,7 +7,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using TagCloud.Core;
-using TagCloud.Core.Infrastructure;
+using TagCloud.Core.Infratructure;
 using TagCloud.CoreTests.Extensions;
 
 namespace TagCloud.CoreTests

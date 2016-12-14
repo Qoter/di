@@ -44,8 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MatchCollectionExtension.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TagCloud.Core\TagCloud.Core.csproj">
-      <Project>{be5e9009-b3b8-4236-abff-4e0aaa447ea9}</Project>
+      <Project>{3F563585-DD3B-4F26-A813-07C0125C310F}</Project>
       <Name>TagCloud.Core</Name>
     </ProjectReference>
   </ItemGroup>
