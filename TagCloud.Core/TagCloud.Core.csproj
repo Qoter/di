@@ -49,25 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircularCloudLayouter.cs" />
-    <Compile Include="Cloud.cs" />
-    <Compile Include="CloudItem.cs" />
+    <Compile Include="CircularRectangleLayouter.cs" />
+    <Compile Include="Tag.cs" />
     <Compile Include="CloudLayouterExtensions.cs" />
-    <Compile Include="EntryCountStatistics.cs" />
     <Compile Include="Infratructure\EnumerableExtension.cs" />
     <Compile Include="Infratructure\PointExtension.cs" />
     <Compile Include="Infratructure\RectangleExtension.cs" />
-    <Compile Include="Interfaces\ICloudLayouter.cs" />
+    <Compile Include="Interfaces\IRectangleLayouter.cs" />
     <Compile Include="Interfaces\IStyleProvider.cs" />
     <Compile Include="Interfaces\IWordsPreprocessor.cs" />
-    <Compile Include="Interfaces\IStatisticsCalculator.cs" />
     <Compile Include="Interfaces\IWordsProvider.cs" />
-    <Compile Include="Interfaces\StyleProvider.cs" />
     <Compile Include="LowerLongPreprocessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CloudRenderer.cs" />
     <Compile Include="Style.cs" />
-    <Compile Include="TxtFileWordsProvider.cs" />
+    <Compile Include="DefaultStyleProvider.cs" />
+    <Compile Include="TagLayouter.cs" />
+    <Compile Include="WordsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using Autofac;
+using Autofac.Core;
 using TagCloud.Core;
 using TagCloud.Core.Interfaces;
 
@@ -13,23 +9,24 @@ namespace TagCloud.Console
     {
         public static void Main(string[] args)
         {
-            var txtWordsFilePath = args[0];
+            var txtWordsFilePath = args.Length > 0 ? args[0] : "default.txt";
 
-            var wordsProvider = new TxtFileWordsProvider(txtWordsFilePath);
-            var words = wordsProvider.GetWords();
+            var builder = new ContainerBuilder();
 
-            var wordsPreprocessor = new LowerLongPreprocessor();
-            var preprocessedWords = wordsPreprocessor.PreprocessWords(words);
+            builder.RegisterType<CircularRectangleLayouter>().As<IRectangleLayouter>();
+            builder.RegisterType<DefaultStyleProvider>().As<IStyleProvider>();
+            builder.RegisterType<LowerLongPreprocessor>().As<IWordsPreprocessor>();
+            builder.RegisterType<TagLayouter>().AsSelf();
 
-            var statisticsCalculator = new StatisticsCalculator();
-            var statistics = statisticsCalculator.CalculateStatistics(preprocessedWords);
+            builder.RegisterType<WordsProvider>()
+                   .As<IWordsProvider>()
+                   .WithParameter(new TypedParameter(typeof(string), txtWordsFilePath));
 
-            var styleProvider = new StyleProvider();
+            builder.RegisterType<CloudRenderer>().AsSelf();
 
-            var visualizator = new CloudRenderer(styleProvider);
-            var bitmap = visualizator.RenderCloud(new Cloud(new CircularCloudLayouter()));
+            var container = builder.Build();
 
-            bitmap.Save("cloud.png",  ImageFormat.Png);
+            var renderer = container.Resolve<CloudRenderer>();
         }
     }
 }
