@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -31,6 +32,17 @@ namespace TagCloud.Core.Infratructure
         {
             rectangle.Offset(xShift, yShift);
             return rectangle;
+        }
+
+        public static Rectangle Resize(this Rectangle rectangle, double xResize, double yResize)
+        {
+            var x = (int)Math.Round(rectangle.X*xResize);
+            var y = (int)Math.Round(rectangle.Y*yResize);
+
+            var width = (int)Math.Round(rectangle.Width*xResize);
+            var height = (int)Math.Round(rectangle.Height*yResize);
+
+            return new Rectangle(x, y, width, height);
         }
     }
 }

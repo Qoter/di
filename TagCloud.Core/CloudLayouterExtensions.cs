@@ -9,7 +9,7 @@ namespace TagCloud.Core
 {
     public static class CloudLayouterExtensions
     {
-        public static Size CalculateSize(this IRectangleLayouter layouter)
+        public static Size CalculateSize(this ICloudLayouter layouter)
         {
             var minX = layouter.PlacedRectangles.Min(r => r.Left);
             var maxX = layouter.PlacedRectangles.Max(r => r.Right);
@@ -19,12 +19,18 @@ namespace TagCloud.Core
             return new Size(maxX - minX, maxY - minY);
         }
 
-        public static IEnumerable<Rectangle> ShiftToFirstQuadrant(this IRectangleLayouter layouter)
+        public static IEnumerable<Rectangle> ShiftToFirstQuadrant(this IEnumerable<Rectangle> source)
         {
-            var xShift = -Math.Min(0, layouter.PlacedRectangles.Min(rectangle => rectangle.Left));
-            var yShift = -Math.Min(0, layouter.PlacedRectangles.Min(rectangle => rectangle.Top));
+            var rects = source.ToList();
+            var xShift = -rects.Min(rectangle => rectangle.Left);
+            var yShift = -rects.Min(rectangle => rectangle.Top);
 
-            return layouter.PlacedRectangles.Select(rectangle => rectangle.Shift(xShift, yShift));
+            return rects.Select(rectangle => rectangle.Shift(xShift, yShift));
+        }
+
+        public static IEnumerable<Rectangle> ShiftToFirstQuadrant(this ICloudLayouter source)
+        {
+            return source.PlacedRectangles.ShiftToFirstQuadrant();
         }
     }
 }

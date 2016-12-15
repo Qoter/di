@@ -5,6 +5,6 @@ namespace TagCloud.Core.Interfaces
     public interface IWordsProvider
     {
         IEnumerable<string> GetWords();
-        int GetWordFactor(string word);
+        int GetFrequency(string word);
     }
 }

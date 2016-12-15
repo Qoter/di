@@ -1,5 +1,6 @@
-﻿using Autofac;
-using Autofac.Core;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using Autofac;
 using TagCloud.Core;
 using TagCloud.Core.Interfaces;
 
@@ -13,20 +14,23 @@ namespace TagCloud.Console
 
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<CircularRectangleLayouter>().As<IRectangleLayouter>();
-            builder.RegisterType<DefaultStyleProvider>().As<IStyleProvider>();
+            builder.RegisterType<CircularCloudLayouter>().As<ICloudLayouter>();
+            builder.RegisterType<FrequencyStyleProvider>().As<IStyleProvider>().SingleInstance();
             builder.RegisterType<LowerLongPreprocessor>().As<IWordsPreprocessor>();
-            builder.RegisterType<TagLayouter>().AsSelf();
 
-            builder.RegisterType<WordsProvider>()
-                   .As<IWordsProvider>()
-                   .WithParameter(new TypedParameter(typeof(string), txtWordsFilePath));
+            builder
+                .RegisterType<WordsProvider>()
+                .As<IWordsProvider>()
+                .WithParameter(new TypedParameter(typeof(string), txtWordsFilePath))
+                .SingleInstance();
 
             builder.RegisterType<CloudRenderer>().AsSelf();
 
             var container = builder.Build();
 
             var renderer = container.Resolve<CloudRenderer>();
+
+            renderer.Render(new Size(600, 800)).Save("out.png", ImageFormat.Png);
         }
     }
 }

@@ -8,24 +8,24 @@ namespace TagCloud.Core
 {
     public class WordsProvider : IWordsProvider
     {
-        private readonly Dictionary<string, int> wordToEntryCount;
+        private readonly Dictionary<string, int> wordToFrequency;
 
         public WordsProvider(string fileName, IWordsPreprocessor preprocessor)
         {
-            wordToEntryCount = PrepareWords(fileName, preprocessor);
+            wordToFrequency = PrepareWords(fileName, preprocessor);
         }
 
         public IEnumerable<string> GetWords()
         {
-            return wordToEntryCount.Keys;
+            return wordToFrequency.Keys;
         }
 
-        public int GetWordFactor(string word)
+        public int GetFrequency(string word)
         {
-            if (!wordToEntryCount.ContainsKey(word))
+            if (!wordToFrequency.ContainsKey(word))
                 throw new ArgumentException($"Word: {word} not found");
 
-            return wordToEntryCount[word];
+            return wordToFrequency[word];
         }
 
         private static Dictionary<string, int> PrepareWords(string fileName, IWordsPreprocessor preprocessor)

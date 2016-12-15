@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace TagCloud.Core
+namespace TagCloud.Core.Primitives
 {
     public class Style
     {

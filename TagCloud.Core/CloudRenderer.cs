@@ -1,38 +1,60 @@
 ﻿using System.Drawing;
+using System.Drawing.Text;
+using System.Windows.Forms;
 using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Core
 {
     public class CloudRenderer
     {
-        private readonly IWordsProvider wordsProvider;
         private readonly IStyleProvider styleProvider;
-        private readonly TagLayouter tagLayouter;
+        private readonly CloudBuilder cloudBuilder;
 
-        public CloudRenderer(IWordsProvider wordsProvider, IStyleProvider styleProvider, TagLayouter tagLayouter)
+        public CloudRenderer(IWordsProvider wordsProvider, IStyleProvider styleProvider, ICloudLayouter cloudLayouter)
         {
-            this.wordsProvider = wordsProvider;
             this.styleProvider = styleProvider;
-            this.tagLayouter = tagLayouter;
+            cloudBuilder = PrepareCloudBuilder(wordsProvider, styleProvider, cloudLayouter);
+        }
+
+        private static CloudBuilder PrepareCloudBuilder(IWordsProvider wordsProvider, IStyleProvider styleProvider, ICloudLayouter layouter)
+        {
+            return CloudBuilder.StartNew(layouter)
+                .WithWordsSize(word => TextRenderer.MeasureText(word, styleProvider.GetStyle(word).Font))
+                .WithWords(wordsProvider.GetWords());
+        }
+
+        private Bitmap Render(TagCloud cloud)
+        {
+            var bitmap = new Bitmap(cloud.Size.Width, cloud.Size.Height);
+
+            using (var graphics = Graphics.FromImage(bitmap))
+            {
+                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                graphics.FillRectangle(new SolidBrush(styleProvider.BackgroundColor), 0, 0, bitmap.Width, bitmap.Height);
+
+                foreach (var tag in cloud.Tags)
+                {
+                    var style = styleProvider.GetStyle(tag.Word);
+                    var strFormat = new StringFormat
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    };
+                    graphics.DrawString(tag.Word, style.Font, new SolidBrush(style.Color), tag.Place, strFormat);
+                }
+            }
+
+            return bitmap;
+        }
+
+        public Bitmap Render(Size cloudSize)
+        {
+            return Render(cloudBuilder.Build(cloudSize));
         }
 
         public Bitmap Render()
         {
-            var bitmap = new Bitmap(0, 0);
-
-            //using (var graphics = Graphics.FromImage(bitmap))
-            //{
-            //    graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-            //    graphics.FillRectangle(new SolidBrush(styleProvider.BackgroundColor), 0, 0, bitmap.Width, bitmap.Height);
-
-            //    foreach (var item in TagCloud.GetItems())
-            //    {
-            //        var wordStyle = styleProvider.GetWordStyle(item);
-            //        graphics.DrawString(item.Word, wordStyle.Font, new SolidBrush(wordStyle.Color), item.Place);
-            //    }
-            //}
-
-            return bitmap;
+            return Render(cloudBuilder.Build());
         }
     }
 }

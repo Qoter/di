@@ -15,7 +15,7 @@ namespace TagCloud.CoreTests
     [TestFixture]
     internal class CircularCloudLayouter_Should
     {
-        private CircularRectangleLayouter defaultLayouter;
+        private CircularCloudLayouter defaultLayouter;
         private Size defaultSize;
         private Point defaultCenter;
 
@@ -23,7 +23,7 @@ namespace TagCloud.CoreTests
         public void SetUp()
         {
             defaultCenter = new Point(0, 0);
-            defaultLayouter = new CircularRectangleLayouter(defaultCenter);
+            defaultLayouter = new CircularCloudLayouter(defaultCenter);
             defaultSize = new Size(10, 5);
         }
 
@@ -67,7 +67,7 @@ namespace TagCloud.CoreTests
         public void PutAlmostInTheCenter_FirstRectangle([Values(0, -1, 1, 3)]int centerX, [Values(0, -1, 1, 3)]int centerY)
         {
             var cloudCenter = new Point(centerX, centerY);
-            var cloudLayouter = new CircularRectangleLayouter(new Point(centerX, centerY));
+            var cloudLayouter = new CircularCloudLayouter(new Point(centerX, centerY));
 
             var rectangle = cloudLayouter.PutNextRectangle(defaultSize);
 

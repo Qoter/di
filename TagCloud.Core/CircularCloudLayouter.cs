@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace TagCloud.Core
 {
-    public class CircularRectangleLayouter : IRectangleLayouter
+    public class CircularCloudLayouter : ICloudLayouter
     {
         public IEnumerable<Rectangle> PlacedRectangles => placedRectangles.AsReadOnly();
         public Point Center { get; }
@@ -17,7 +17,7 @@ namespace TagCloud.Core
         private const double SpiralFactor = 1/Math.PI;
         private double currentAngle = 0;
 
-        public CircularRectangleLayouter(Point center = default(Point))
+        public CircularCloudLayouter(Point center = default(Point))
         {
             Center = center;
         }

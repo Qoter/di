@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace TagCloud.Core.Interfaces
 {
-    public interface IRectangleLayouter
+    public interface ICloudLayouter
     {
         IEnumerable<Rectangle> PlacedRectangles { get; }
         Rectangle PutNextRectangle(Size size);
