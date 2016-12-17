@@ -1,11 +1,11 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-﻿using TagCloud.Core.Infratructure;
-﻿using TagCloud.Core.Interfaces;
+using TagCloud.Core.Infratructure;
+using TagCloud.Core.Interfaces;
 
-namespace TagCloud.Core
+namespace TagCloud.Core.Model
 {
     public class CircularCloudLayouter : ICloudLayouter
     {

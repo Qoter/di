@@ -49,10 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircularCloudLayouter.cs" />
-    <Compile Include="CloudBuilder.cs" />
+    <Compile Include="Domain\CircularCloudLayouter.cs" />
+    <Compile Include="Domain\CloudBuilder.cs" />
+    <Compile Include="Domain\CloudLayouterExtensions.cs" />
+    <Compile Include="Domain\LowerLongPreprocessor.cs" />
+    <Compile Include="Domain\WordsProvider.cs" />
     <Compile Include="Primitives\Style.cs" />
-    <Compile Include="CloudLayouterExtensions.cs" />
     <Compile Include="Infratructure\EnumerableExtension.cs" />
     <Compile Include="Infratructure\PointExtension.cs" />
     <Compile Include="Infratructure\RectangleExtension.cs" />
@@ -60,13 +62,12 @@
     <Compile Include="Interfaces\IStyleProvider.cs" />
     <Compile Include="Interfaces\IWordsPreprocessor.cs" />
     <Compile Include="Interfaces\IWordsProvider.cs" />
-    <Compile Include="LowerLongPreprocessor.cs" />
     <Compile Include="Primitives\Tag.cs" />
+    <Compile Include="Primitives\Cloud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CloudRenderer.cs" />
-    <Compile Include="FrequencyStyleProvider.cs" />
-    <Compile Include="TagCloud.cs" />
-    <Compile Include="WordsProvider.cs" />
+    <Compile Include="View\CloudRenderer.cs" />
+    <Compile Include="View\CloudSettings.cs" />
+    <Compile Include="View\StyleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

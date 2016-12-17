@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloud.Console", "TagCloud.Console\TagCloud.Console.csproj", "{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloud.CoreTests", "TagCloud.CoreTests\TagCloud.CoreTests.csproj", "{B532A595-C394-428F-8B54-83830C982A18}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloud.Core", "TagCloud.Core\TagCloud.Core.csproj", "{3F563585-DD3B-4F26-A813-07C0125C310F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagCloud.Client", "TagCloud.Client\TagCloud.Client.csproj", "{D49E9A91-478D-4084-9FE2-688240D90C68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53D31C3E-218F-46A7-953D-2F5BA1A68EB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B532A595-C394-428F-8B54-83830C982A18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B532A595-C394-428F-8B54-83830C982A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B532A595-C394-428F-8B54-83830C982A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{3F563585-DD3B-4F26-A813-07C0125C310F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F563585-DD3B-4F26-A813-07C0125C310F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F563585-DD3B-4F26-A813-07C0125C310F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D49E9A91-478D-4084-9FE2-688240D90C68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D49E9A91-478D-4084-9FE2-688240D90C68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D49E9A91-478D-4084-9FE2-688240D90C68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D49E9A91-478D-4084-9FE2-688240D90C68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
