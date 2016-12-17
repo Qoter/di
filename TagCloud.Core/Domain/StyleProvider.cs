@@ -2,7 +2,7 @@
 using TagCloud.Core.Interfaces;
 using TagCloud.Core.Primitives;
 
-namespace TagCloud.Core.View
+namespace TagCloud.Core.Domain
 {
     public class StyleProvider : IStyleProvider
     {

@@ -3,9 +3,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Autofac;
 using Fclp;
+using TagCloud.Core.Domain;
 using TagCloud.Core.Interfaces;
-using TagCloud.Core.Model;
-using TagCloud.Core.View;
 
 
 namespace TagCloud.Client.ConsoleClient
@@ -52,6 +51,11 @@ namespace TagCloud.Client.ConsoleClient
              .As('f', "font")
              .SetDefault("Arial")
              .WithDescription("Font name");
+
+            p.Setup(arg => arg.SpiralStep)
+                .As('p', "spiral-step")
+                .SetDefault(1)
+                .WithDescription("Greater step - greater spiral");
 
             p.SetupHelp("?", "helo")
              .Callback(text => Console.WriteLine(text));
@@ -104,7 +108,8 @@ namespace TagCloud.Client.ConsoleClient
                 Size = new Size(arguments.Width, arguments.Height),
                 BackgroundColor = ColorTranslator.FromHtml(arguments.BackgroundColor),
                 FontColor = ColorTranslator.FromHtml(arguments.FontColor),
-                FontFamily = new FontFamily(arguments.Font)
+                FontFamily = new FontFamily(arguments.Font),
+                SpiralFactor = Math.Max(1, arguments.SpiralStep) / Math.PI
             };
 
 

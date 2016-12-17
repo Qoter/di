@@ -6,7 +6,7 @@ using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 using TagCloud.Core.Primitives;
 
-namespace TagCloud.Core.Model
+namespace TagCloud.Core.Domain
 {
     public class CloudBuilder
     {

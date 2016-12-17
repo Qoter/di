@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
 
-namespace TagCloud.Core.View
+namespace TagCloud.Core.Domain
 {
     public class CloudSettings
     {
@@ -9,5 +8,6 @@ namespace TagCloud.Core.View
         public Color FontColor { get; set; }
         public FontFamily FontFamily { get; set; }
         public Size Size { get; set; }
+        public double SpiralFactor { get; set; }
     }
 }

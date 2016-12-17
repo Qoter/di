@@ -2,7 +2,7 @@
 using System.Linq;
 using TagCloud.Core.Interfaces;
 
-namespace TagCloud.Core.Model
+namespace TagCloud.Core.Domain
 {
     public class LowerLongPreprocessor : IWordsPreprocessor
     {

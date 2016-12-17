@@ -5,7 +5,7 @@ using System.Linq;
 using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 
-namespace TagCloud.Core.Model
+namespace TagCloud.Core.Domain
 {
     public class CircularCloudLayouter : ICloudLayouter
     {
@@ -14,11 +14,12 @@ namespace TagCloud.Core.Model
 
         private readonly List<Rectangle> placedRectangles = new List<Rectangle>();
         private const double DeltaAngle = 0.1;
-        private const double SpiralFactor = 1/Math.PI;
+        private readonly double spiralFactor;
         private double currentAngle = 0;
 
-        public CircularCloudLayouter(Point center = default(Point))
+        public CircularCloudLayouter(CloudSettings settings,Point center = default(Point))
         {
+            spiralFactor = settings?.SpiralFactor ?? 1/Math.PI;
             Center = center;
         }
 
@@ -58,7 +59,7 @@ namespace TagCloud.Core.Model
         private Point GetNextPoint()
         {
             currentAngle += DeltaAngle;
-            var currentRadius = SpiralFactor*currentAngle;
+            var currentRadius = spiralFactor*currentAngle;
 
             var currentX = currentRadius*Math.Cos(currentAngle);
             var currentY = currentRadius*Math.Sin(currentAngle);

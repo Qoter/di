@@ -3,9 +3,8 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.Windows.Forms;
 using TagCloud.Core.Interfaces;
-using TagCloud.Core.Model;
 
-namespace TagCloud.Core.View
+namespace TagCloud.Core.Domain
 {
     public class CloudRenderer
     {

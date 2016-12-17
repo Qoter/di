@@ -4,7 +4,7 @@ using System.Linq;
 using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 
-namespace TagCloud.Core.Model
+namespace TagCloud.Core.Domain
 {
     public static class CloudLayouterExtensions
     {
