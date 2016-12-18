@@ -29,7 +29,7 @@ namespace TagCloud.Client.ConsoleClient
 
             p.Setup(arg => arg.SourcePath)
              .As('s', "source")
-             .SetDefault("defaul.txt")
+             .SetDefault("default.txt")
              .WithDescription("Path to source file with word");
 
             p.Setup(arg => arg.Width)
