@@ -12,17 +12,19 @@ namespace TagCloud.Core.Domain
     {
         private static readonly Size DefaultCharSize = new Size(10, 10);
         private readonly ICloudLayouter layouter;
+        private readonly ICloudSettingsProvider settingsProvider;
         private Func<string, Size> getWordSize = word => new Size(DefaultCharSize.Width * word.Length, DefaultCharSize.Height);
         private readonly List<string> placedWords = new List<string>();
 
-        private CloudBuilder(ICloudLayouter layouter)
+        public CloudBuilder(ICloudLayouter layouter, ICloudSettingsProvider settingsProvider)
         {
             this.layouter = layouter;
+            this.settingsProvider = settingsProvider;
         }
 
-        public static CloudBuilder StartNew(ICloudLayouter layouter)
+        public static CloudBuilder StartNew(ICloudLayouter layouter, ICloudSettingsProvider settingsProvider)
         {
-            return new CloudBuilder(layouter);
+            return new CloudBuilder(layouter, settingsProvider);
         }
 
         public CloudBuilder WithWords(IEnumerable<string> words)
@@ -42,15 +44,10 @@ namespace TagCloud.Core.Domain
             return this;
         }
 
-        public Cloud Build(Size cloudSize)
-        {
-            var tags = CreateTags(cloudSize);
-            return new Cloud(tags, cloudSize);
-        }
-
         public Cloud Build()
         {
-            return Build(layouter.CalculateSize());
+            var tags = CreateTags(settingsProvider.CloudSettings.Size);
+            return new Cloud(tags, settingsProvider.CloudSettings.Size);
         }
 
         private IEnumerable<Tag> CreateTags(Size cloudSize)

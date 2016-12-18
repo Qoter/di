@@ -9,5 +9,7 @@ namespace TagCloud.Client.ConsoleClient
         public string FontColor { get; set; }
         public string Font { get; set; }
         public int SpiralStep { get; set; }
+        public string ImageFormat { get; set; }
+        public string OutputFilename { get; set; }
     }
 }

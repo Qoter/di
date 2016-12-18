@@ -10,9 +10,9 @@ namespace TagCloud.Core.Domain
     {
         private readonly Dictionary<string, int> wordToFrequency;
 
-        public WordsProvider(string fileName, IWordsPreprocessor preprocessor)
+        public WordsProvider(IWordsDirectoryProvider wordsDirectoryProvider, IWordsPreprocessor preprocessor)
         {
-            wordToFrequency = PrepareWords(fileName, preprocessor);
+            wordToFrequency = ReadWords(wordsDirectoryProvider, preprocessor);
         }
 
         public IEnumerable<string> GetWords()
@@ -28,9 +28,9 @@ namespace TagCloud.Core.Domain
             return wordToFrequency[word];
         }
 
-        private static Dictionary<string, int> PrepareWords(string fileName, IWordsPreprocessor preprocessor)
+        private static Dictionary<string, int> ReadWords(IWordsDirectoryProvider wordsDirectoryProvider, IWordsPreprocessor preprocessor)
         {
-            var words = File.ReadLines(fileName);
+            var words = File.ReadLines(wordsDirectoryProvider.WordsDirectory);
 
             return preprocessor
                 .PreprocessWords(words)

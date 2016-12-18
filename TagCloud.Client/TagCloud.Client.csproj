@@ -52,10 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloudUiBase.cs" />
     <Compile Include="ConsoleClient\ConsoleUi.cs" />
     <Compile Include="ConsoleClient\ConsoleUiArgs.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="ICloudUi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

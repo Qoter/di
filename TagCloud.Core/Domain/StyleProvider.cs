@@ -7,21 +7,23 @@ namespace TagCloud.Core.Domain
     public class StyleProvider : IStyleProvider
     {
         private readonly IWordsProvider wordsProvider;
-        private readonly CloudSettings settings;
+        private readonly IStyleSettingsProvider settingsProvider;
 
         private const float BaseFontSize = 10;
 
-        public StyleProvider(IWordsProvider wordsProvider, CloudSettings settings)
+        public StyleProvider(IWordsProvider wordsProvider, IStyleSettingsProvider settingsProvider)
         {
             this.wordsProvider = wordsProvider;
-            this.settings = settings;
+            this.settingsProvider = settingsProvider;
         }
+
+        public Color Background => settingsProvider.StyleSettings.BackgroundColor;
 
         public Style GetStyle(string word)
         {
             var fontSize = BaseFontSize*wordsProvider.GetFrequency(word);
-            var font = new Font(settings.FontFamily, fontSize);
-            return new Style(font, settings.FontColor);
+            var font = new Font(settingsProvider.StyleSettings.FontFamily, fontSize);
+            return new Style(font, settingsProvider.StyleSettings.FontColor);
         }
     }
 }

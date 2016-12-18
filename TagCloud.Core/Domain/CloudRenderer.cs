@@ -6,28 +6,32 @@ using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Core.Domain
 {
-    public class CloudRenderer
+    public class CloudRenderer : ICloudRenderer
     {
         private readonly IStyleProvider styleProvider;
-        private readonly CloudSettings settings;
+        private readonly ICloudSettingsProvider settingsProvider;
         private readonly CloudBuilder cloudBuilder;
 
-        public CloudRenderer(IWordsProvider wordsProvider, IStyleProvider styleProvider, ICloudLayouter cloudLayouter, CloudSettings settings)
+        public CloudRenderer(
+            IWordsProvider wordsProvider, 
+            IStyleProvider styleProvider,
+            ICloudLayouter cloudLayouter,
+            ICloudSettingsProvider settingsProvider)
         {
             this.styleProvider = styleProvider;
-            this.settings = settings;
-            cloudBuilder = PrepareCloudBuilder(wordsProvider, styleProvider, cloudLayouter);
+            this.settingsProvider = settingsProvider;
+            cloudBuilder = PrepareCloudBuilder(wordsProvider, styleProvider, cloudLayouter, settingsProvider);
         }
 
         public Bitmap Render()
         {
-            var cloud = cloudBuilder.Build(settings.Size);
-            var bitmap = new Bitmap(settings.Size.Width, settings.Size.Height);
+            var cloud = cloudBuilder.Build();
+            var bitmap = new Bitmap(settingsProvider.CloudSettings.Size.Width, settingsProvider.CloudSettings.Size.Height);
 
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                graphics.FillRectangle(new SolidBrush(settings.BackgroundColor), 0, 0, bitmap.Width, bitmap.Height);
+                graphics.FillRectangle(new SolidBrush(styleProvider.Background), 0, 0, bitmap.Width, bitmap.Height);
 
                 foreach (var tag in cloud.Tags)
                 {
@@ -39,9 +43,13 @@ namespace TagCloud.Core.Domain
             return bitmap;
         }
 
-        private static CloudBuilder PrepareCloudBuilder(IWordsProvider wordsProvider, IStyleProvider styleProvider, ICloudLayouter layouter)
+        private static CloudBuilder PrepareCloudBuilder(
+            IWordsProvider wordsProvider,
+            IStyleProvider styleProvider,
+            ICloudLayouter layouter,
+            ICloudSettingsProvider settingsProvider)
         {
-            return CloudBuilder.StartNew(layouter)
+            return CloudBuilder.StartNew(layouter, settingsProvider)
                 .WithWordsSize(word => TextRenderer.MeasureText(word, styleProvider.GetStyle(word).Font))
                 .WithWords(wordsProvider.GetWords());
         }

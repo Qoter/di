@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using Autofac;
 using Fclp;
 using TagCloud.Core.Domain;
 using TagCloud.Core.Interfaces;
 
-
 namespace TagCloud.Client.ConsoleClient
 {
-    public class ConsoleUi : ICloudUi
+    public class ConsoleUi : CloudUiBase
     {
         private readonly string[] args;
 
@@ -18,13 +16,20 @@ namespace TagCloud.Client.ConsoleClient
             this.args = args;
         }
 
-        private static FluentCommandLineParser<ConsoleUiArgs> PrepareParser()
+        public override void Run()
+        {
+            var container = BuildContainer();
+
+            container.Resolve<ICloudSaver>().Save();
+        }
+
+        private static FluentCommandLineParser<ConsoleUiArgs> SetupParser()
         {
             var p = new FluentCommandLineParser<ConsoleUiArgs>();
 
             p.Setup(arg => arg.SourcePath)
              .As('s', "source")
-             .SetDefault("default.txt")
+             .SetDefault("defaul.txt")
              .WithDescription("Path to source file with word");
 
             p.Setup(arg => arg.Width)
@@ -48,14 +53,24 @@ namespace TagCloud.Client.ConsoleClient
              .WithDescription("Font color format #AAGGBB");
 
             p.Setup(arg => arg.Font)
-             .As('f', "font")
+             .As("font")
              .SetDefault("Arial")
              .WithDescription("Font name");
 
             p.Setup(arg => arg.SpiralStep)
-                .As('p', "spiral-step")
+                .As("spiral-step")
                 .SetDefault(1)
                 .WithDescription("Greater step - greater spiral");
+
+            p.Setup(arg => arg.ImageFormat)
+                .As('f', "format")
+                .SetDefault("png")
+                .WithDescription("Format of image: (png, jpg, bmp)");
+
+            p.Setup(arg => arg.OutputFilename)
+                .As('o', "output")
+                .SetDefault("out")
+                .WithDescription("Output filename");
 
             p.SetupHelp("?", "helo")
              .Callback(text => Console.WriteLine(text));
@@ -63,59 +78,36 @@ namespace TagCloud.Client.ConsoleClient
             return p;
         }
 
-        private static CloudRenderer PrepareRenderer(CloudSettings settings, string sourcePath)
+        protected override AppSettings GetSettings()
         {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterInstance(settings).AsSelf().ExternallyOwned();
-            builder.RegisterType<CircularCloudLayouter>().As<ICloudLayouter>();
-            builder.RegisterType<StyleProvider>().As<IStyleProvider>().SingleInstance();
-            builder.RegisterType<LowerLongPreprocessor>().As<IWordsPreprocessor>();
-
-            builder
-                .RegisterType<WordsProvider>()
-                .As<IWordsProvider>()
-                .WithParameter(new TypedParameter(typeof(string), sourcePath))
-                .SingleInstance();
-
-            builder.RegisterType<CloudRenderer>().AsSelf();
-
-
-            var container = builder.Build();
-
-            return container.Resolve<CloudRenderer>();
-        }
-
-        public void Run()
-        {
-            var parser = PrepareParser();
-            var parseResult = parser.Parse(args);
-            if (parseResult.HasErrors)
-            {
-                Console.WriteLine(parseResult.ErrorText);
-                return;
-            }
-
-            if (parseResult.HelpCalled)
-            {
-                return;
-            }
+            var parser = SetupParser();
+            parser.Parse(args);
 
             var arguments = parser.Object;
 
-            var settings = new CloudSettings
+            return new AppSettings()
             {
-                Size = new Size(arguments.Width, arguments.Height),
-                BackgroundColor = ColorTranslator.FromHtml(arguments.BackgroundColor),
-                FontColor = ColorTranslator.FromHtml(arguments.FontColor),
-                FontFamily = new FontFamily(arguments.Font),
-                SpiralFactor = Math.Max(1, arguments.SpiralStep) / Math.PI
+                CloudSettings = new CloudSettings()
+                {
+                    Size = new Size(arguments.Width, arguments.Height),
+                    SpiralFactor = Math.Max(1, arguments.SpiralStep) / Math.PI
+                },
+
+                OutputSettings = new OutputSettings()
+                {
+                    ImageFormat = arguments.ImageFormat,
+                    OutputFilename = arguments.OutputFilename
+                },
+
+                StyleSettings = new StyleSettings()
+                {
+                    BackgroundColor = ColorTranslator.FromHtml(arguments.BackgroundColor),
+                    FontColor = ColorTranslator.FromHtml(arguments.FontColor),
+                    FontFamily = new FontFamily(arguments.Font)
+                },
+
+                WordsDirectory = arguments.SourcePath
             };
-
-
-            var renderer = PrepareRenderer(settings, arguments.SourcePath);
-
-            renderer.Render().Save("out.png", ImageFormat.Png);
         }
     }
 }

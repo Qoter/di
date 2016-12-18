@@ -17,9 +17,9 @@ namespace TagCloud.Core.Domain
         private readonly double spiralFactor;
         private double currentAngle = 0;
 
-        public CircularCloudLayouter(CloudSettings settings,Point center = default(Point))
+        public CircularCloudLayouter(ICloudSettingsProvider cloudSettingsProvider,Point center = default(Point))
         {
-            spiralFactor = settings?.SpiralFactor ?? 1/Math.PI;
+            spiralFactor = cloudSettingsProvider.CloudSettings.SpiralFactor;
             Center = center;
         }
 

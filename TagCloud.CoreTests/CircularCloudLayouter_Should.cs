@@ -3,12 +3,15 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using TagCloud.Core.Domain;
 using TagCloud.Core.Infratructure;
+using TagCloud.Core.Interfaces;
 using TagCloud.CoreTests.Extensions;
+
 
 namespace TagCloud.CoreTests
 {
@@ -18,21 +21,23 @@ namespace TagCloud.CoreTests
         private CircularCloudLayouter defaultLayouter;
         private Size defaultSize;
         private Point defaultCenter;
-
-        private readonly CloudSettings defaultCloudSettings = new CloudSettings
-        {
-            BackgroundColor = Color.White,
-            FontColor = Color.Black,
-            SpiralFactor = 1/Math.PI,
-            FontFamily = FontFamily.GenericSerif,
-            Size = new Size(1024, 1024)
-        };
+        private ICloudSettingsProvider cloudSettingsProvider;
 
         [SetUp]
         public void SetUp()
         {
             defaultCenter = new Point(0, 0);
-            defaultLayouter = new CircularCloudLayouter(defaultCloudSettings, defaultCenter);
+
+            cloudSettingsProvider = A.Fake<ICloudSettingsProvider>();
+
+            var defaultCloudSettings = new CloudSettings
+            {
+                SpiralFactor = 1/Math.PI,
+                Size = new Size(1024, 1024)
+            };
+
+            A.CallTo(() => cloudSettingsProvider.CloudSettings).Returns(defaultCloudSettings);
+            defaultLayouter = new CircularCloudLayouter(cloudSettingsProvider, defaultCenter);
             defaultSize = new Size(10, 5);
         }
 
@@ -76,7 +81,7 @@ namespace TagCloud.CoreTests
         public void PutAlmostInTheCenter_FirstRectangle([Values(0, -1, 1, 3)]int centerX, [Values(0, -1, 1, 3)]int centerY)
         {
             var cloudCenter = new Point(centerX, centerY);
-            var cloudLayouter = new CircularCloudLayouter(defaultCloudSettings, new Point(centerX, centerY));
+            var cloudLayouter = new CircularCloudLayouter(cloudSettingsProvider, new Point(centerX, centerY));
 
             var rectangle = cloudLayouter.PutNextRectangle(defaultSize);
 
