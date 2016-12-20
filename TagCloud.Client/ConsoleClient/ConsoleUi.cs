@@ -22,10 +22,7 @@ namespace TagCloud.Client.ConsoleClient
         {
             if (argsParseResult.Errors.Any())
             {
-                foreach (var error in argsParseResult.Errors)
-                {
-                    Console.WriteLine(error);
-                }
+                Console.WriteLine(string.Join(Environment.NewLine, argsParseResult.Errors.Select(e => e.ToString())));
                 return;
             }
 
