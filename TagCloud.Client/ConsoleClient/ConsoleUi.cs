@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using Autofac;
-using Fclp;
+using CommandLine;
 using TagCloud.Core.Domain;
 using TagCloud.Core.Interfaces;
 
@@ -9,81 +10,33 @@ namespace TagCloud.Client.ConsoleClient
 {
     public class ConsoleUi : CloudUiBase
     {
-        private readonly string[] args;
+        private readonly ParserResult<ConsoleUiArgs> argsParseResult;
+
 
         public ConsoleUi(string[] args)
         {
-            this.args = args;
+            argsParseResult = Parser.Default.ParseArguments<ConsoleUiArgs>(args);
         }
 
         public override void Run()
         {
-            var container = BuildContainer();
+            if (argsParseResult.Errors.Any())
+            {
+                foreach (var error in argsParseResult.Errors)
+                {
+                    Console.WriteLine(error);
+                }
+                return;
+            }
 
+            var container = BuildContainer();
             container.Resolve<ICloudSaver>().Save();
         }
 
-        private static FluentCommandLineParser<ConsoleUiArgs> SetupParser()
-        {
-            var p = new FluentCommandLineParser<ConsoleUiArgs>();
-
-            p.Setup(arg => arg.SourcePath)
-             .As('s', "source")
-             .SetDefault("default.txt")
-             .WithDescription("Path to source file with word");
-
-            p.Setup(arg => arg.Width)
-             .As('w', "width")
-             .SetDefault(1024)
-             .WithDescription("Result image width");
-
-            p.Setup(arg => arg.Height)
-             .As('h', "height")
-             .SetDefault(1024)
-             .WithDescription("Result image height");
-
-            p.Setup(arg => arg.BackgroundColor)
-            .As('b', "background")
-            .SetDefault("#ffffff")
-            .WithDescription("Background color format #AAGGBB");
-
-            p.Setup(arg => arg.FontColor)
-             .As('c', "color")
-             .SetDefault("#000000")
-             .WithDescription("Font color format #AAGGBB");
-
-            p.Setup(arg => arg.Font)
-             .As("font")
-             .SetDefault("Arial")
-             .WithDescription("Font name");
-
-            p.Setup(arg => arg.SpiralStep)
-                .As("spiral-step")
-                .SetDefault(1)
-                .WithDescription("Greater step - greater spiral");
-
-            p.Setup(arg => arg.ImageFormat)
-                .As('f', "format")
-                .SetDefault("png")
-                .WithDescription("Format of image: (png, jpg, bmp)");
-
-            p.Setup(arg => arg.OutputFilename)
-                .As('o', "output")
-                .SetDefault("out")
-                .WithDescription("Output filename");
-
-            p.SetupHelp("?", "helo")
-             .Callback(text => Console.WriteLine(text));
-
-            return p;
-        }
 
         protected override AppSettings GetSettings()
         {
-            var parser = SetupParser();
-            parser.Parse(args);
-
-            var arguments = parser.Object;
+            var arguments = argsParseResult.Value;
 
             return new AppSettings()
             {
