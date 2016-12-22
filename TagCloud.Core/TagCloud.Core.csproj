@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\AppSettings.cs" />
     <Compile Include="Domain\CircularCloudLayouter.cs" />
     <Compile Include="Domain\CloudBuilder.cs" />
     <Compile Include="Domain\CloudLayouterExtensions.cs" />
@@ -57,10 +56,10 @@
     <Compile Include="Domain\CloudSaver.cs" />
     <Compile Include="Domain\CloudSettings.cs" />
     <Compile Include="Domain\LowerLongPreprocessor.cs" />
-    <Compile Include="Domain\OutputSettings.cs" />
     <Compile Include="Domain\StyleProvider.cs" />
-    <Compile Include="Domain\StyleSettings.cs" />
     <Compile Include="Domain\WordsProvider.cs" />
+    <Compile Include="Infratructure\None.cs" />
+    <Compile Include="Infratructure\Result.cs" />
     <Compile Include="Interfaces\ICloudRenderer.cs" />
     <Compile Include="Interfaces\ICloudSaver.cs" />
     <Compile Include="Interfaces\ICloudSettingsProvider.cs" />
@@ -78,6 +77,9 @@
     <Compile Include="Primitives\Tag.cs" />
     <Compile Include="Primitives\Cloud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="Settings\OutputSettings.cs" />
+    <Compile Include="Settings\StyleSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

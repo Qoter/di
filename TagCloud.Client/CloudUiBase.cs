@@ -1,6 +1,7 @@
 using Autofac;
 using TagCloud.Core.Domain;
 using TagCloud.Core.Interfaces;
+using TagCloud.Core.Settings;
 
 namespace TagCloud.Client
 {

@@ -1,8 +1,7 @@
-﻿using System.Drawing.Imaging;
-using System.Web.Configuration;
+﻿using TagCloud.Core.Domain;
 using TagCloud.Core.Interfaces;
 
-namespace TagCloud.Core.Domain
+namespace TagCloud.Core.Settings
 {
     public class AppSettings : IWordsDirectoryProvider, ICloudSettingsProvider, IStyleSettingsProvider, IOutputSettingsProvider
     {

@@ -5,13 +5,13 @@ using Autofac;
 using CommandLine;
 using TagCloud.Core.Domain;
 using TagCloud.Core.Interfaces;
+using TagCloud.Core.Settings;
 
 namespace TagCloud.Client.ConsoleClient
 {
     public class ConsoleUi : CloudUiBase
     {
         private readonly ParserResult<ConsoleUiArgs> argsParseResult;
-
 
         public ConsoleUi(string[] args)
         {
@@ -30,26 +30,25 @@ namespace TagCloud.Client.ConsoleClient
             container.Resolve<ICloudSaver>().Save();
         }
 
-
         protected override AppSettings GetSettings()
         {
             var arguments = argsParseResult.Value;
 
-            return new AppSettings()
+            return new AppSettings
             {
-                CloudSettings = new CloudSettings()
+                CloudSettings = new CloudSettings
                 {
                     Size = new Size(arguments.Width, arguments.Height),
                     SpiralFactor = Math.Max(1, arguments.SpiralStep) / Math.PI
                 },
 
-                OutputSettings = new OutputSettings()
+                OutputSettings = new OutputSettings
                 {
                     ImageFormat = arguments.ImageFormat,
                     OutputFilename = arguments.OutputFilename
                 },
 
-                StyleSettings = new StyleSettings()
+                StyleSettings = new StyleSettings
                 {
                     BackgroundColor = ColorTranslator.FromHtml(arguments.BackgroundColor),
                     FontColor = ColorTranslator.FromHtml(arguments.FontColor),

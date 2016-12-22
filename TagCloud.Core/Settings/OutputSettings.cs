@@ -1,6 +1,4 @@
-﻿using System.Drawing.Imaging;
-
-namespace TagCloud.Core.Domain
+﻿namespace TagCloud.Core.Settings
 {
     public class OutputSettings
     {
