@@ -22,9 +22,7 @@ namespace TagCloud.Core.Domain
             var imageFormat = outputSettingsProvider.OutputSettings.ImageFormat;
             var filename = outputSettingsProvider.OutputSettings.OutputFilename;
 
-            cloudBitmap.Save($"{filename}.{imageFormat.ToString().ToLower()}", imageFormat);
-
-            return new Result<None>();
+            return Result.OfAction(() => cloudBitmap.Save($"{filename}.{imageFormat.ToString().ToLower()}", imageFormat));
         }
     }
 }

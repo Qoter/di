@@ -50,6 +50,19 @@ namespace TagCloud.Core.Infratructure
 			}
 		}
 
+	    public static Result<None> OfAction(Action act, string error = null)
+	    {
+	        try
+	        {
+	            act();
+                return new Result<None>();
+	        }
+	        catch (Exception e)
+	        {
+	            return Fail<None>(error ?? e.Message);
+	        }
+	    }
+
 		public static Result<TOutput> Then<TInput, TOutput>(this Result<TInput> input, Func<TInput, TOutput> continuation)
 		{
 		    return !input.IsSuccess 
