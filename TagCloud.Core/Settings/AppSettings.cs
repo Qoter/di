@@ -1,11 +1,11 @@
-﻿using TagCloud.Core.Domain;
+﻿using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Core.Settings
 {
-    public class AppSettings : IWordsDirectoryProvider, ICloudSettingsProvider, IStyleSettingsProvider, IOutputSettingsProvider
+    public class AppSettings : IInputSettingsProvider, IOutputSettingsProvider, ICloudSettingsProvider, IStyleSettingsProvider
     {
-        public string WordsDirectory { get; set; }
+        public InputSettings InputSettings { get; set; }
         public OutputSettings OutputSettings { get; set; }
         public CloudSettings CloudSettings { get; set; }
         public StyleSettings StyleSettings { get; set; }

@@ -54,7 +54,7 @@
     <Compile Include="Domain\CloudLayouterExtensions.cs" />
     <Compile Include="Domain\CloudRenderer.cs" />
     <Compile Include="Domain\CloudSaver.cs" />
-    <Compile Include="Domain\CloudSettings.cs" />
+    <Compile Include="Settings\CloudSettings.cs" />
     <Compile Include="Domain\LowerLongPreprocessor.cs" />
     <Compile Include="Domain\StyleProvider.cs" />
     <Compile Include="Domain\WordsProvider.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Interfaces\ICloudSettingsProvider.cs" />
     <Compile Include="Interfaces\IOutputSettingsProvider.cs" />
     <Compile Include="Interfaces\IStyleSettingsProvider.cs" />
-    <Compile Include="Interfaces\IWordsDirectoryProvider.cs" />
+    <Compile Include="Interfaces\IInputSettingsProvider.cs" />
     <Compile Include="Primitives\Style.cs" />
     <Compile Include="Infratructure\EnumerableExtension.cs" />
     <Compile Include="Infratructure\PointExtension.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="Primitives\Cloud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="Settings\InputSettings.cs" />
     <Compile Include="Settings\OutputSettings.cs" />
     <Compile Include="Settings\StyleSettings.cs" />
   </ItemGroup>

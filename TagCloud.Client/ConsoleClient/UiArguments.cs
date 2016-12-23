@@ -1,8 +1,11 @@
+using System.Drawing;
 using CommandLine;
+using TagCloud.Core.Infratructure;
+using TagCloud.Core.Settings;
 
 namespace TagCloud.Client.ConsoleClient
 {
-    public class ConsoleUiArgs
+    public class UiArguments
     {
         [Option('s', "source", DefaultValue = "default.txt", HelpText = "Path to file with words by line")]
         public string SourcePath { get; set; }
@@ -31,5 +34,18 @@ namespace TagCloud.Client.ConsoleClient
         [Option("format", DefaultValue = "png", HelpText = "Format of result image")]
         public string ImageFormat { get; set; }
 
+        public Result<AppSettings> AsAppSettings()
+        {
+            var appSettings = new AppSettings();
+            return InputSettings.Create(SourcePath)
+                .Then(inpSettings => appSettings.InputSettings = inpSettings)
+                .Then(_ => OutputSettings.FromStrings(ImageFormat, OutputFilename))
+                .Then(outSettings => appSettings.OutputSettings = outSettings)
+                .Then(_ => CloudSettings.Create(new Size(Width, Height), SpiralStep))
+                .Then(cloudSet => appSettings.CloudSettings = cloudSet)
+                .Then(_ => StyleSettings.FromStrings(BackgroundColor, FontColor, Font))
+                .Then(styleSetting => appSettings.StyleSettings = styleSetting)
+                .Then(_ => appSettings);
+        }
     }
 }

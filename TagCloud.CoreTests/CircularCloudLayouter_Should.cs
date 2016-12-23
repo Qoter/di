@@ -10,6 +10,7 @@ using NUnit.Framework.Interfaces;
 using TagCloud.Core.Domain;
 using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
+using TagCloud.Core.Settings;
 using TagCloud.CoreTests.Extensions;
 
 
@@ -30,11 +31,7 @@ namespace TagCloud.CoreTests
 
             cloudSettingsProvider = A.Fake<ICloudSettingsProvider>();
 
-            var defaultCloudSettings = new CloudSettings
-            {
-                SpiralFactor = 1/Math.PI,
-                Size = new Size(1024, 1024)
-            };
+            var defaultCloudSettings = CloudSettings.Create(new Size(1024, 1024), 1/Math.PI).GetValueOrThrow();
 
             A.CallTo(() => cloudSettingsProvider.CloudSettings).Returns(defaultCloudSettings);
             defaultLayouter = new CircularCloudLayouter(cloudSettingsProvider, defaultCenter);

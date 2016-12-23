@@ -1,7 +1,9 @@
-﻿namespace TagCloud.Core.Interfaces
+﻿using TagCloud.Core.Infratructure;
+
+namespace TagCloud.Core.Interfaces
 {
     public interface ICloudSaver
     {
-        void Save();
+        Result<None> Save();
     }
 }

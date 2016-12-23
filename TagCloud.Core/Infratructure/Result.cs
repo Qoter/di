@@ -11,12 +11,14 @@ namespace TagCloud.Core.Infratructure
 		}
 		public string Error { get; }
 		internal T Value { get; }
-		public T GetValueOrThrow()
-		{
-			if (IsSuccess) return Value;
-			throw new InvalidOperationException($"No value. Only Error {Error}");
-		}
-		public bool IsSuccess => Error == null;
+
+        public T GetValueOrThrow()
+        {
+            if (IsSuccess) return Value;
+            throw new InvalidOperationException($"No value. Only Error {Error}");
+        }
+
+        public bool IsSuccess => Error == null;
 	}
 
 	public static class Result
@@ -55,9 +57,7 @@ namespace TagCloud.Core.Infratructure
                 : Of(() => continuation(input.Value));
 		}
 
-	    public static Result<TOutput> Then<TInput, TOutput>(
-			this Result<TInput> input,
-			Func<TInput, Result<TOutput>> continuation)
+	    public static Result<TOutput> Then<TInput, TOutput>(this Result<TInput> input, Func<TInput, Result<TOutput>> continuation)
 	    {
 	        return !input.IsSuccess 
                 ? Fail<TOutput>(input.Error) 

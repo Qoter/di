@@ -26,7 +26,7 @@ namespace TagCloud.Core.Domain
         public Bitmap Render()
         {
             var cloud = cloudBuilder.Build();
-            var bitmap = new Bitmap(settingsProvider.CloudSettings.Size.Width, settingsProvider.CloudSettings.Size.Height);
+            var bitmap = new Bitmap(cloud.Size.Width, cloud.Size.Height);
 
             using (var graphics = Graphics.FromImage(bitmap))
             {

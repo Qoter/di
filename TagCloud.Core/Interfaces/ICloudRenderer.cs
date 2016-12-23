@@ -1,4 +1,5 @@
 using System.Drawing;
+using TagCloud.Core.Infratructure;
 
 namespace TagCloud.Core.Interfaces
 {

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using Autofac;
 using CommandLine;
-using TagCloud.Core.Domain;
+using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 using TagCloud.Core.Settings;
 
@@ -11,52 +11,41 @@ namespace TagCloud.Client.ConsoleClient
 {
     public class ConsoleUi : CloudUiBase
     {
-        private readonly ParserResult<ConsoleUiArgs> argsParseResult;
+        private readonly string[] args;
 
         public ConsoleUi(string[] args)
         {
-            argsParseResult = Parser.Default.ParseArguments<ConsoleUiArgs>(args);
+            this.args = args;
         }
 
         public override void Run()
         {
-            if (argsParseResult.Errors.Any())
-            {
-                Console.WriteLine(string.Join(Environment.NewLine, argsParseResult.Errors.Select(e => e.ToString())));
-                return;
-            }
-
-            var container = BuildContainer();
-            container.Resolve<ICloudSaver>().Save();
+            GetSettings()
+                .Then(SaveCloud)
+                .OnFail(Console.WriteLine);
         }
 
-        protected override AppSettings GetSettings()
+        protected override Result<AppSettings> GetSettings()
         {
-            var arguments = argsParseResult.Value;
+            return ParseArguments(args).Then(uiArgs => uiArgs.AsAppSettings());
+        }
 
-            return new AppSettings
+        private Result<None> SaveCloud(AppSettings settings)
+        {
+            var container = BuildContainer(() => settings);
+            return container.Resolve<ICloudSaver>().Save();
+        }
+
+        private static Result<UiArguments> ParseArguments(string[] args)
+        {
+            var parseResult = Parser.Default.ParseArguments<UiArguments>(args);
+            if (parseResult.Errors.Any())
             {
-                CloudSettings = new CloudSettings
-                {
-                    Size = new Size(arguments.Width, arguments.Height),
-                    SpiralFactor = Math.Max(1, arguments.SpiralStep) / Math.PI
-                },
+                var errorText = string.Join(Environment.NewLine, parseResult.Errors.Select(e => e.ToString()));
+                return Result.Fail<UiArguments>(errorText);
+            }
 
-                OutputSettings = new OutputSettings
-                {
-                    ImageFormat = arguments.ImageFormat,
-                    OutputFilename = arguments.OutputFilename
-                },
-
-                StyleSettings = new StyleSettings
-                {
-                    BackgroundColor = ColorTranslator.FromHtml(arguments.BackgroundColor),
-                    FontColor = ColorTranslator.FromHtml(arguments.FontColor),
-                    FontFamily = new FontFamily(arguments.Font)
-                },
-
-                WordsDirectory = arguments.SourcePath
-            };
+            return Result.Ok(parseResult.Value);
         }
     }
 }

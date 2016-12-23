@@ -1,5 +1,4 @@
-﻿using System;
-using TagCloud.Client.ConsoleClient;
+﻿using TagCloud.Client.ConsoleClient;
 
 namespace TagCloud.Client
 {
@@ -7,19 +6,7 @@ namespace TagCloud.Client
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                new ConsoleUi(args).Run();
-            }
-            catch (Exception e)
-            {
-                while (e != null)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine();
-                    e = e.InnerException;
-                }
-            }
+            new ConsoleUi(args).Run();
         }
     }
 }
