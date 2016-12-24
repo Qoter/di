@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing.Imaging;
-using TagCloud.Core.Infratructure;
+﻿using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Core.Domain

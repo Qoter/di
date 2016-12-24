@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using TagCloud.Core;
 using TagCloud.Core.Domain;
 using TagCloud.Core.Infratructure;
 

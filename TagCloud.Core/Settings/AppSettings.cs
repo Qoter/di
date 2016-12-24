@@ -1,5 +1,4 @@
-﻿using TagCloud.Core.Infratructure;
-using TagCloud.Core.Interfaces;
+﻿using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Core.Settings
 {
