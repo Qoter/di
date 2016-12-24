@@ -13,8 +13,8 @@ namespace TagCloud.Core.Domain
         private static readonly Size DefaultCharSize = new Size(10, 10);
         private readonly ICloudLayouter layouter;
         private readonly ICloudSettingsProvider settingsProvider;
-        private Func<string, Size> getWordSize = word => new Size(DefaultCharSize.Width * word.Length, DefaultCharSize.Height);
-        private readonly List<string> placedWords = new List<string>();
+        private Func<string, Result<Size>> getWordSize = word => new Size(DefaultCharSize.Width * word.Length, DefaultCharSize.Height).AsResult();
+        private IEnumerable<string> words;
 
         public CloudBuilder(ICloudLayouter layouter, ICloudSettingsProvider settingsProvider)
         {
@@ -29,29 +29,28 @@ namespace TagCloud.Core.Domain
 
         public CloudBuilder WithWords(IEnumerable<string> words)
         {
-            foreach (var word in words)
-            {
-                placedWords.Add(word);
-                layouter.PutNextRectangle(getWordSize(word));
-            }
-
+            this.words = words;
             return this;
         }
 
-        public CloudBuilder WithWordsSize(Func<string, Size> wordsSizeProvider)
+        public CloudBuilder WithWordsSize(Func<string, Result<Size>> wordsSizeProvider)
         {
             getWordSize = wordsSizeProvider;
             return this;
         }
 
-        public Cloud Build()
+        public Result<Cloud> Build()
         {
-            var tags = CreateTags(settingsProvider.CloudSettings.Size);
-            return new Cloud(tags, settingsProvider.CloudSettings.Size);
+            return CreateTags(settingsProvider.CloudSettings.Size)
+                .Then(tags => new Cloud(tags, settingsProvider.CloudSettings.Size));
         }
 
-        private IEnumerable<Tag> CreateTags(Size cloudSize)
+        private Result<IEnumerable<Tag>> CreateTags(Size cloudSize)
         {
+            var placedWords = PlaceWords(layouter);
+            if (!placedWords.IsSuccess)
+                return Result.Fail<IEnumerable<Tag>>(placedWords.Error);
+
             var currentSize = layouter.CalculateSize();
             var widthResizeFactor = (double) cloudSize.Width/currentSize.Width;
             var heightResizeFactor = (double) cloudSize.Height/currentSize.Height;
@@ -60,7 +59,21 @@ namespace TagCloud.Core.Domain
                 .Select(rect => rect.Resize(widthResizeFactor, heightResizeFactor))
                 .ShiftToFirstQuadrant();
 
-            return placedWords.Zip(places, (word, place) => new Tag(word, place));
+            return placedWords.Value.Zip(places, (word, place) => new Tag(word, place)).AsResult();
+        }
+
+        private Result<List<string>> PlaceWords(ICloudLayouter cloudLayouter)
+        {
+            var placedWords = new List<string>();
+            foreach (var word in words)
+            {
+                placedWords.Add(word);
+                var placeResult = getWordSize(word).Then(cloudLayouter.PutNextRectangle);
+                if (!placeResult.IsSuccess)
+                    return Result.Fail<List<string>>(placeResult.Error);
+            }
+
+            return placedWords.AsResult();
         }
     }
 }

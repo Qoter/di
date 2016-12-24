@@ -18,7 +18,8 @@ namespace TagCloud.Core.Settings
         {
             return size.Height <= 0 || size.Width <= 0 
                 ? Result.Fail<CloudSettings>($"Size should be positive {size.Height}x{size.Width}")
-                : spiralStep <= 0 ? Result.Fail<CloudSettings>($"Spiral step should be positibe {size.Height}x{size.Width}")
+                : spiralStep <= 0 
+                ? Result.Fail<CloudSettings>($"Spiral step should be positibe {size.Height}x{size.Width}")
                 : Result.Ok(new CloudSettings(size, spiralStep));
         }
     }

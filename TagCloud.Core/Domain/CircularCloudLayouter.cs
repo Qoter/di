@@ -23,18 +23,18 @@ namespace TagCloud.Core.Domain
             Center = center;
         }
 
-        public Rectangle PutNextRectangle(Size rectangleSize)
+        public Result<Rectangle> PutNextRectangle(Size rectangleSize)
         {
             if (rectangleSize.Width <= 0 || rectangleSize.Height <= 0)
-                throw new ArgumentException();
+                return Result.Fail<Rectangle>($"Internal error. Rectangle size should be positive {rectangleSize.Width}x{rectangleSize.Height}");
 
             var nextRectangle = PutNextRectangleOnSpiral(rectangleSize);
             placedRectangles.Add(nextRectangle);
 
-            return nextRectangle;
+            return Result.Ok(nextRectangle);
         }
 
-        public List<Rectangle> PutAllRectangles(IEnumerable<Size> sizes)
+        public List<Result<Rectangle>> PutAllRectangles(IEnumerable<Size> sizes)
         {
             return sizes.Select(PutNextRectangle).ToList();
         }

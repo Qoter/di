@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using TagCloud.Core.Infratructure;
 
 namespace TagCloud.Core.Interfaces
 {
     public interface ICloudLayouter
     {
         IEnumerable<Rectangle> PlacedRectangles { get; }
-        Rectangle PutNextRectangle(Size size);
+        Result<Rectangle>PutNextRectangle(Size size);
     }
 }

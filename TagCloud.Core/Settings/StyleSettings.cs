@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using TagCloud.Core.Infratructure;
 
@@ -29,12 +30,21 @@ namespace TagCloud.Core.Settings
             {
                 return Result.Fail<StyleSettings>($"Font color has incorrect format: {htmlFontColor}");
             }
+            if (!IsFontExists(fontFamily))
+            {
+                return Result.Fail<StyleSettings>($"Font not found: {fontFamily}");
+            }
 
             var bgColor = ColorTranslator.FromHtml(htmlBgColor);
             var fontColor = ColorTranslator.FromHtml(htmlFontColor);
             var font = new FontFamily(fontFamily);
-
             return Result.Ok(new StyleSettings(bgColor, fontColor, font));
+        }
+
+        private static bool IsFontExists(string fontFamily)
+        {
+            return Result.Of(() => new FontFamily(fontFamily)).IsSuccess;
         }
     }
 }
+

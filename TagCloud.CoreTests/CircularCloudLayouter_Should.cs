@@ -56,11 +56,11 @@ namespace TagCloud.CoreTests
         }
 
         [Test, Pairwise]
-        public void ThrowArgumentException_OnNotPositiveSize([Values(0, -1)]int width, [Values(0, -1)]int height)
+        public void ReturnFail_OnNotPositiveSize([Values(0, -1)]int width, [Values(0, -1)]int height)
         {
-            Action tryPutNotPositiveSize = () => defaultLayouter.PutNextRectangle(new Size(width, height));
+            var putResult = defaultLayouter.PutNextRectangle(new Size(width, height));
 
-            tryPutNotPositiveSize.ShouldThrow<ArgumentException>();
+            putResult.IsSuccess.Should().BeFalse();
         }
 
 
@@ -71,7 +71,7 @@ namespace TagCloud.CoreTests
 
             var rectangle = defaultLayouter.PutNextRectangle(specifiedSize);
 
-            rectangle.Size.Should().Be(specifiedSize);
+            rectangle.GetValueOrThrow().Size.Should().Be(specifiedSize);
         }
 
         [Test, Pairwise]
@@ -82,7 +82,7 @@ namespace TagCloud.CoreTests
 
             var rectangle = cloudLayouter.PutNextRectangle(defaultSize);
 
-            rectangle.Location.DistanceTo(cloudCenter).Should().BeLessOrEqualTo(2);
+            rectangle.GetValueOrThrow().Location.DistanceTo(cloudCenter).Should().BeLessOrEqualTo(2);
         }
 
         [Test]

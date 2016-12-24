@@ -5,6 +5,6 @@ namespace TagCloud.Core.Interfaces
 {
     public interface ICloudRenderer
     {
-        Bitmap Render();
+        Result<Bitmap> Render();
     }
 }

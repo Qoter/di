@@ -1,4 +1,5 @@
 using System.Drawing;
+using TagCloud.Core.Infratructure;
 using TagCloud.Core.Primitives;
 
 namespace TagCloud.Core.Interfaces
@@ -6,6 +7,6 @@ namespace TagCloud.Core.Interfaces
     public interface IStyleProvider
     {
         Color Background { get; }
-        Style GetStyle(string word);
+        Result<Style> GetStyle(string word);
     }
 }

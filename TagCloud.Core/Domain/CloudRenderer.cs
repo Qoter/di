@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Linq;
 using System.Windows.Forms;
+using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
+using TagCloud.Core.Primitives;
 
 namespace TagCloud.Core.Domain
 {
@@ -23,9 +26,13 @@ namespace TagCloud.Core.Domain
             cloudBuilder = PrepareCloudBuilder(wordsProvider, styleProvider, cloudLayouter, settingsProvider);
         }
 
-        public Bitmap Render()
+        public Result<Bitmap> Render()
         {
-            var cloud = cloudBuilder.Build();
+            return cloudBuilder.Build().Then(RednderCloud);
+        }
+
+        private Result<Bitmap> RednderCloud(Cloud cloud)
+        {
             var bitmap = new Bitmap(cloud.Size.Width, cloud.Size.Height);
 
             using (var graphics = Graphics.FromImage(bitmap))
@@ -33,14 +40,24 @@ namespace TagCloud.Core.Domain
                 graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                 graphics.FillRectangle(new SolidBrush(styleProvider.Background), 0, 0, bitmap.Width, bitmap.Height);
 
-                foreach (var tag in cloud.Tags)
+                return DrawTags(graphics, cloud).Then(_ => bitmap);
+            }
+        }
+
+        private Result<None> DrawTags(Graphics g, Cloud cloud)
+        {
+            foreach (var tag in cloud.Tags)
+            {
+                var fillResut = styleProvider.GetStyle(tag.Word)
+                    .Then(style => FillString(g, tag.Word, style.Font, new SolidBrush(style.Color), tag.Place));
+
+                if (!fillResut.IsSuccess)
                 {
-                    var style = styleProvider.GetStyle(tag.Word);
-                    FillString(graphics, tag.Word, style.Font, new SolidBrush(style.Color), tag.Place);
+                    return Result.Fail<None>(fillResut.Error);
                 }
             }
 
-            return bitmap;
+            return new Result<None>();
         }
 
         private static CloudBuilder PrepareCloudBuilder(
@@ -50,13 +67,13 @@ namespace TagCloud.Core.Domain
             ICloudSettingsProvider settingsProvider)
         {
             return CloudBuilder.StartNew(layouter, settingsProvider)
-                .WithWordsSize(word => TextRenderer.MeasureText(word, styleProvider.GetStyle(word).Font))
+                .WithWordsSize(word => styleProvider.GetStyle(word).Then(style => TextRenderer.MeasureText(word, style.Font)))
                 .WithWords(wordsProvider.GetWords());
         }
 
-        private static void FillString(Graphics g, string str, Font font, Brush brush, Rectangle place)
+        private static Result<None> FillString(Graphics g, string word, Font font, Brush brush, Rectangle place)
         {
-            var currentSize = g.MeasureString(str, font);
+            var currentSize = g.MeasureString(word, font);
             var placeSize = place.Size;
             var resizeFactor = Math.Min(placeSize.Height/currentSize.Height, placeSize.Width/currentSize.Width);
 
@@ -68,7 +85,13 @@ namespace TagCloud.Core.Domain
                 LineAlignment = StringAlignment.Center
             };
 
-            g.DrawString(str, resizedFont, brush, place, alignCenterFormat);
+            if (resizedFont.Size < 4)
+            {
+                return Result.Fail<None>($"Word: {word} does not fit on image");
+            }
+
+            g.DrawString(word, resizedFont, brush, place, alignCenterFormat);
+            return new Result<None>();
         }
     }
 }

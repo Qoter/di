@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 
 namespace TagCloud.Core.Domain
@@ -20,12 +21,11 @@ namespace TagCloud.Core.Domain
             return wordToFrequency.Keys;
         }
 
-        public int GetFrequency(string word)
+        public Result<int> GetFrequency(string word)
         {
-            if (!wordToFrequency.ContainsKey(word))
-                throw new ArgumentException($"Word: {word} not found");
-
-            return wordToFrequency[word];
+            return !wordToFrequency.ContainsKey(word) 
+                ? Result.Fail<int>($"Internal error. Not found frequency for word {word}") 
+                : Result.Ok(wordToFrequency[word]);
         }
 
         private static Dictionary<string, int> ReadWords(IInputSettingsProvider inputSettingsProvider, IWordsPreprocessor preprocessor)
