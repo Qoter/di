@@ -2,6 +2,7 @@
 using System.Linq;
 using Autofac;
 using CommandLine;
+using TagCloud.Client.BaseClient;
 using TagCloud.Core.Infratructure;
 using TagCloud.Core.Interfaces;
 using TagCloud.Core.Settings;

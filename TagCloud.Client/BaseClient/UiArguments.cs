@@ -38,11 +38,11 @@ namespace TagCloud.Client.BaseClient
         {
             var appSettings = new AppSettings();
             return InputSettings.Create(SourcePath)
-                .Then(inpSettings => appSettings.InputSettings = inpSettings)
+                .Then(inputSettings => appSettings.InputSettings = inputSettings)
                 .Then(_ => OutputSettings.FromStrings(ImageFormat, OutputFilename))
-                .Then(outSettings => appSettings.OutputSettings = outSettings)
+                .Then(outputSettings => appSettings.OutputSettings = outputSettings)
                 .Then(_ => CloudSettings.Create(new Size(Width, Height), SpiralStep))
-                .Then(cloudSet => appSettings.CloudSettings = cloudSet)
+                .Then(cloudSettting => appSettings.CloudSettings = cloudSettting)
                 .Then(_ => StyleSettings.FromStrings(BackgroundColor, FontColor, Font))
                 .Then(styleSetting => appSettings.StyleSettings = styleSetting)
                 .Then(_ => appSettings);

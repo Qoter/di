@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="BaseClient\CloudUiBase.cs" />
     <Compile Include="BaseClient\UiArguments.cs" />
-    <Compile Include="CloudUiBase.cs" />
     <Compile Include="ConsoleClient\ConsoleUi.cs" />
     <Compile Include="ConsoleClient\UiArguments.cs" />
     <Compile Include="EntryPoint.cs" />
