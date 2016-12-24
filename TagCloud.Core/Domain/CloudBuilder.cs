@@ -14,7 +14,7 @@ namespace TagCloud.Core.Domain
         private readonly ICloudLayouter layouter;
         private readonly ICloudSettingsProvider settingsProvider;
         private Func<string, Result<Size>> getWordSize = word => new Size(DefaultCharSize.Width * word.Length, DefaultCharSize.Height).AsResult();
-        private IEnumerable<string> words;
+        private Result<IEnumerable<string>> wordsResult;
 
         public CloudBuilder(ICloudLayouter layouter, ICloudSettingsProvider settingsProvider)
         {
@@ -27,9 +27,9 @@ namespace TagCloud.Core.Domain
             return new CloudBuilder(layouter, settingsProvider);
         }
 
-        public CloudBuilder WithWords(IEnumerable<string> words)
+        public CloudBuilder WithWords(Result<IEnumerable<string>> words)
         {
-            this.words = words;
+            this.wordsResult = words;
             return this;
         }
 
@@ -65,16 +65,18 @@ namespace TagCloud.Core.Domain
 
         private Result<List<string>> PlaceWords(ICloudLayouter cloudLayouter)
         {
-            var placedWords = new List<string>();
-            foreach (var word in words)
+            return wordsResult.Then(words =>
             {
-                placedWords.Add(word);
-                var placeResult = getWordSize(word).Then(cloudLayouter.PutNextRectangle);
-                if (!placeResult.IsSuccess)
-                    return Result.Fail<List<string>>(placeResult.Error);
-            }
-
-            return placedWords.AsResult();
+                var placedWords = new List<string>();
+                foreach (var word in words)
+                {
+                    placedWords.Add(word);
+                    var placeResult = getWordSize(word).Then(cloudLayouter.PutNextRectangle);
+                    if (!placeResult.IsSuccess)
+                        return Result.Fail<List<string>>(placeResult.Error);
+                }
+                return placedWords.AsResult();
+            });
         }
     }
 }

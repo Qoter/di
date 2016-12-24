@@ -33,11 +33,11 @@ namespace TagCloud.Client.BaseClient
                   .As<IOutputSettingsProvider>();
         }
 
-        protected IContainer BuildContainer(Func<AppSettings> buildContainer=null)
+        protected IContainer BuildContainer(Func<AppSettings> getSettings=null)
         {
             var builder = new ContainerBuilder();
             SetupContainer(builder);
-            RegisterSettings(builder, buildContainer);
+            RegisterSettings(builder, getSettings);
             return builder.Build();
         }
     }

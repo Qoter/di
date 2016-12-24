@@ -9,33 +9,33 @@ namespace TagCloud.Core.Domain
 {
     public class WordsProvider : IWordsProvider
     {
-        private readonly Dictionary<string, int> wordToFrequency;
+        private readonly Result<Dictionary<string, int>> wordToFrequencyResult;
 
         public WordsProvider(IInputSettingsProvider inputSettingsProvider, IWordsPreprocessor preprocessor)
         {
-            wordToFrequency = ReadWords(inputSettingsProvider, preprocessor);
+            wordToFrequencyResult = ReadWords(inputSettingsProvider, preprocessor);
         }
 
-        public IEnumerable<string> GetWords()
+        public Result<IEnumerable<string>> GetWords()
         {
-            return wordToFrequency.Keys;
+            return wordToFrequencyResult.Then(freqDict => (IEnumerable<string>)freqDict.Keys);
         }
 
         public Result<int> GetFrequency(string word)
         {
-            return !wordToFrequency.ContainsKey(word) 
-                ? Result.Fail<int>($"Internal error. Not found frequency for word {word}") 
-                : Result.Ok(wordToFrequency[word]);
+            return wordToFrequencyResult
+                .Then(wordToFrequency => wordToFrequency.ContainsKey(word)
+                    ? Result.Ok(wordToFrequency[word])
+                    : Result.Fail<int>($"Internal error.Not found frequency for word {word}"));
         }
 
-        private static Dictionary<string, int> ReadWords(IInputSettingsProvider inputSettingsProvider, IWordsPreprocessor preprocessor)
+        private static Result<Dictionary<string, int>> ReadWords(IInputSettingsProvider inputSettingsProvider, IWordsPreprocessor preprocessor)
         {
-            var words = File.ReadLines(inputSettingsProvider.InputSettings.WordsFile);
-
-            return preprocessor
-                .PreprocessWords(words)
-                .GroupBy(word => word)
-                .ToDictionary(wordGroup => wordGroup.Key, wordGroup => wordGroup.Count());
+            return Result.Of(() => File.ReadAllLines(inputSettingsProvider.InputSettings.WordsFile))
+                .Then(words => preprocessor
+                    .PreprocessWords(words)
+                    .GroupBy(word => word)
+                    .ToDictionary(wordGroup => wordGroup.Key, wordGroup => wordGroup.Count()));
         }
     }
 }
