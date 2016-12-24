@@ -47,19 +47,20 @@ namespace TagCloud.Core.Domain
 
         private Result<IEnumerable<Tag>> CreateTags(Size cloudSize)
         {
-            var placedWords = PlaceWords(layouter);
-            if (!placedWords.IsSuccess)
-                return Result.Fail<IEnumerable<Tag>>(placedWords.Error);
+            return PlaceWords(layouter).Then(placedWords => CreateTags(cloudSize, placedWords));
+        }
 
+        private IEnumerable<Tag> CreateTags(Size cloudSize, IEnumerable<string> placedWords)
+        {
             var currentSize = layouter.CalculateSize();
-            var widthResizeFactor = (double) cloudSize.Width/currentSize.Width;
-            var heightResizeFactor = (double) cloudSize.Height/currentSize.Height;
+            var widthResizeFactor = (double)cloudSize.Width / currentSize.Width;
+            var heightResizeFactor = (double)cloudSize.Height / currentSize.Height;
 
             var places = layouter.PlacedRectangles
                 .Select(rect => rect.Resize(widthResizeFactor, heightResizeFactor))
                 .ShiftToFirstQuadrant();
 
-            return placedWords.Value.Zip(places, (word, place) => new Tag(word, place)).AsResult();
+            return placedWords.Zip(places, (word, place) => new Tag(word, place));
         }
 
         private Result<List<string>> PlaceWords(ICloudLayouter cloudLayouter)
